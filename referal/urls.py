@@ -1,10 +1,10 @@
 from django.urls import path, include
-from .views import login, signin, signout, dashboard, registerUser
+from .views import UserLogin, signUp, UserLogout, dashboard, registerUser
 
 urlpatterns = [
-    path('login/', login),
-    path('signin/', signin),
+    path('login/', UserLogin.as_view() ),
+    path('signup/', signUp),
     path('register-user/', registerUser),
-    path('signout/', signout),
+    path('logout/', UserLogout),
     path('dashboard/', dashboard),
 ]

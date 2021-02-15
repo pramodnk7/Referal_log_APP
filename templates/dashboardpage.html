@@ -1,1 +1,38 @@
-this is dashboard page html
+<!DOCTYPE html>
+<html lang="en">
+	<meta charset="UTF-8">
+	<title>Dashboard</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="">
+	<style>
+		.logoutLblPos{
+		   position:fixed;
+		   right:30px;
+		   top:20px;
+		}
+	</style>
+	<body>
+	
+	<div class="logoutLblPos">
+		<form action="/logout/">
+		    <input type="submit" value="Logout" />
+		</form>
+	</div>
+	<div>
+		Hi, {{request.user.username}}
+	</div>
+
+	</body>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$(".logoutLblPos").click(function(){
+			$.ajax({
+	            url: "/logout/",
+	            type: 'POST',
+	            data : {},
+	            dataType: 'json',
+        	},"json");
+			window.location.href = "/login/";
+		});
+	</script>
+</html>

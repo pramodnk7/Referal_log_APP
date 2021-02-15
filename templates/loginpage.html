@@ -5,17 +5,39 @@
     <title> Login Page </title>  
 </head>    
 <body>    
-    <center> <h1> Login </h1> </center>   
-    <form action="/login/" method="POST">  
+    <center> <h1> Login</h1> </center>   
+    <form id="login_form" action="/login/" method="post">  
         <div>   
-            <label>Username : </label>   
+            <label style="margin-left: 25px" > Email : </label>   
             <input type="text" placeholder="Enter Email" name="email" required><br><br>
-            <label>Password : </label>   
+            <label>Password :</label>   
             <input type="password" placeholder="Enter Password" name="password" required><br> <br> 
             <button type="submit" style="color:blue;text-align:center; margin-left: 75px ">Login</button>
-            <input type="button" onclick="location.href='/signin/';" value="Signin" style="color:blue;"/>   
+            <input type="button" onclick="location.href='/signup/';" value="Sign up" style="color:blue;"/>   
         </div>   
     </form>     
-</body> 
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>  
+</body>   
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $('#login_form').submit(function(event){
+        event.preventDefault();
+        var sndata = {}
+        $(this).serializeArray().map(function(x){sndata[x.name] = x.value;});
+        $.ajax({
+            url: $('#login_form').attr('action'),
+            type: 'POST',
+            data : sndata,
+            dataType: 'json',
+            success: function(data){
+                console.log(data)
+                if(data.status == 1){
+                    window.location.href = "/dashboard/";
+                }else{
+                    alert(data.error_info)
+                }
+            }
+        },"json");
+    return false;
+});
+</script>  
 </html>  
