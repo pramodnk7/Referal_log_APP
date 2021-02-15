@@ -51,20 +51,20 @@ def registerUser(request):
 	try:
 		qd = request.POST
 		if User.objects.filter(username=qd.get('email')).exists():
-			response['error_info'] = 'User with email already exists.'
+			response['error_info'] = 'User with email already exists. Please Login.'
 		else:
 			referal_code = qd.get('referal_code')
-			if referal_code:
+			if referal_code not in ["0", 0]:
 				referal_code = str(referal_code)
 				referer = UserProfile.objects.filter(referal_code=referal_code)
 				if not referer:
 					response['error_info'] = 'Invalid referal code.'
-					return HttpResponse(response)
+					return HttpResponse(json.dumps(response))
 			user = User(username=qd.get('email'))
 			user.set_password(qd.get('password'))
 			user.save()
 			user_profile = UserProfile(user=user)
-			if referal_code:
+			if referal_code not in ["0", 0]:
 				referer = referer[0]
 				user_profile.referer = referer
 				user_profile.points = 100
@@ -74,7 +74,7 @@ def registerUser(request):
 			response['status'] = 1
 	except Exception as e:
 		print(e, flush=True)
-	return HttpResponse(response)
+	return HttpResponse(json.dumps(response))
 
 def signout(request):
 	return HttpResponse("sign out")

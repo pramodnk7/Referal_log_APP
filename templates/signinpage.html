@@ -5,7 +5,7 @@
     <title> Sign in Page </title>  
 </head>    
 <body>    
-    <center> <h1> Sign in -{{ referal_code }}-</h1> </center>   
+    <center> <h1> Sign in</h1> </center>   
     <form id="signin_form" action="/register-user/" method="post">  
         <div>   
             <label style="margin-left: 25px" > Email : </label>   
@@ -30,14 +30,13 @@
           dataType: 'json',
           success: function(data){
             console.log(data)
-            var data = JSON.parse(data)
             if(data.status == 1){
                 window.location.href = "/dashboard/";
             }else{
-                console.log(data, typeof(data))
+                alert(data.error_info)
             }
           }
-    });
+    },"json");
     return false;
 });
 </script>  
