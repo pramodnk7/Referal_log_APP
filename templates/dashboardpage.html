@@ -17,22 +17,59 @@
 		<form action="/logout/">
 		    <input type="submit" value="Logout" />
 		</form>
-	</div>
+	</div><br><br>
 	<div>
-		Hi, {{request.user.username}}
+		Hi, {{request.user.username}}<br><br>
+		Your Points : {{user_profile.points}}<br><br>
+		Referal Code : 
+		{% if user_profile.referal_code == "0" %}
+			<span class="generate_ref_code"> <a href="#" >Generate</a> </span>
+		{% else %} 
+			{{user_profile.referal_code}}<br><br>
+			Share referal code :
+			<input type="text" class="email" name="email" placeholder="Email" required=""><br>
+			<button style="margin-left: 130px; margin-top: 10px" class="send_email">Send</button>
+		{% endif %}
 	</div>
+
 
 	</body>
 	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
-		$(".logoutLblPos").click(function(){
+		$(".generate_ref_code").click(function(){
 			$.ajax({
-	            url: "/logout/",
+	            url: "/generate-ref-code/",
 	            type: 'POST',
 	            data : {},
 	            dataType: 'json',
+	            success: function(data){
+		            console.log(data)
+		            if(data.status == 1){
+		                $(".generate_ref_code").html(data.referal_code);
+		                window.location.reload();
+		            }else{
+		                alert(data.error_info)
+		            }
+
+		        }
         	},"json");
-			window.location.href = "/login/";
+		});
+
+		$(".send_email").click(function(){
+			$.ajax({
+	            url: "/send-ref-code-email/",
+	            type: 'POST',
+	            data : {'email': $(".email").val()},
+	            dataType: 'json',
+	            success: function(data){
+		            console.log(data)
+		            if(data.status == 1){
+		                alert("Email sent")
+		            }else{
+		                alert(data.error_info)
+		            }
+		        }
+        	},"json");
 		});
 	</script>
 </html>

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UserLogin, signUp, UserLogout, dashboard, registerUser
+from .views import UserLogin, signUp, UserLogout, dashboard, registerUser,generateRefcode, sendRefCodeEmail
 
 urlpatterns = [
     path('login/', UserLogin.as_view() ),
@@ -7,4 +7,6 @@ urlpatterns = [
     path('register-user/', registerUser),
     path('logout/', UserLogout),
     path('dashboard/', dashboard),
+    path('generate-ref-code/', generateRefcode),
+    path('send-ref-code-email/', sendRefCodeEmail),
 ]
