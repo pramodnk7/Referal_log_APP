@@ -3,6 +3,7 @@ Logged  in users can generate referal code and share via email.
 If new user sign up with this referal code, both gets 100 points.
 
 This is done using django and docker-compose.
+So you need to install docker and docker-compose in your machine.
 
 Once the branch is checkedout, follow below command
 
