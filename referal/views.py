@@ -3,13 +3,10 @@ from django.http import HttpResponse
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404, redirect
-from .serializers import UserProfileSerializer
+from django.shortcuts import redirect
 from .models import UserProfile
-from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.models import User
-from django.http.response import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from .sendemail import send_mail
