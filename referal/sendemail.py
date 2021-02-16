@@ -1,14 +1,14 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from .passcode import passcode
+# from .passcode import passcode
 
 
 def send_mail(subject, body, receiver_email):
 	try:
 	#The mail addresses and password
-		sender_address = passcode.sender_address
-		sender_pass = passcode.sender_pass
+		sender_address = "pramodnk7@gmail.com"
+		sender_pass = "xxxxxxxxxxx"
 		receiver_address = receiver_email
 		#Setup the MIME
 		message = MIMEMultipart()
