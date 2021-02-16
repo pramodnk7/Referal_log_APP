@@ -6,7 +6,7 @@
 </head>    
 <body>    
     <center> <h1> Sign Up</h1> </center>   
-    <form id="signin_form" action="/register-user/" method="post">  
+    <form id="signup_form" action="/signup/" method="post">  
         <div>   
             <label style="margin-left: 25px" > Email : </label>   
             <input type="text" placeholder="Enter Email" name="email" required><br><br>
@@ -19,12 +19,12 @@
 </body>   
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-    $('#signin_form').submit(function(event){
+    $('#signup_form').submit(function(event){
         event.preventDefault();
         var sndata = {"referal_code": {{referal_code}}}
         $(this).serializeArray().map(function(x){sndata[x.name] = x.value;});
         $.ajax({
-          url: $('#signin_form').attr('action'),
+          url: $('#signup_form').attr('action'),
           type: 'POST',
           data : sndata,
           dataType: 'json',
