@@ -25,14 +25,14 @@ class userLogin(APIView):
 	def post(self, request, *args, **kwargs):
 		response = {'status':0, 'error_info':'Internal Error.'}
 		qd = request.data
-		email = qd.get('email').strip() if qd.get('email') else qd.get('email')
+		username = qd.get('username').strip() if qd.get('username') else qd.get('username')
 		password = qd.get('password').strip() if qd.get('password') else qd.get('password')
-		if not email or not password:
-			response['error_info'] = "Email and password are mandatory."
+		if not username or not password:
+			response['error_info'] = "Username and password are mandatory."
 			return HttpResponse(json.dumps(response))
-		user = authenticate(username=email, password=password)
+		user = authenticate(username=username, password=password)
 		if user is None:
-			response['error_info'] = "Invalid Username(Email) or password."
+			response['error_info'] = "Invalid Username or Password."
 			return HttpResponse(json.dumps(response))
 		else:
 			login(request, user)
@@ -52,8 +52,8 @@ class userSignUp(APIView):
 		response = {'status': 0, 'error_info':'Internal error'}
 		try:
 			qd = request.POST
-			if User.objects.filter(username=qd.get('email')).exists():
-				response['error_info'] = 'User with email already exists. Please Login.'
+			if User.objects.filter(username=qd.get('username')).exists():
+				response['error_info'] = 'Username already exists. Please Login.'
 			else:
 				referal_code = qd.get('referal_code')
 				if referal_code not in ["0", 0]:
@@ -62,7 +62,7 @@ class userSignUp(APIView):
 					if not referer:
 						response['error_info'] = 'Invalid referal code.'
 						return HttpResponse(json.dumps(response))
-				user = User(username=qd.get('email'))
+				user = User(username=qd.get('username'))
 				user.set_password(qd.get('password'))
 				user.save()
 				user_profile = UserProfile(user=user)
