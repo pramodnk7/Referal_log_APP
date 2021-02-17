@@ -7,5 +7,5 @@ urlpatterns = [
     path('logout/', userLogout),
     path('dashboard/', dashboard),
     path('generate-ref-code/', generateRefcode),
-    path('send-ref-code-email/', sendRefCodeEmail),
+    path('send-ref-code-email/', sendRefCodeEmail.as_view),
 ]
