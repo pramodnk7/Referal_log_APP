@@ -5,7 +5,10 @@
     <title> Sign Up Page </title>  
 </head>    
 <body>    
-    <center> <h1> Sign Up</h1> </center>   
+    <center> <h1> Sign Up</h1> </center>  
+    {% for a in r %}
+        {{a.username}}
+    {% endfor %} 
     <form id="signup_form" action="/signup/" method="post">  
         <div>   
             <label> Username : </label>   

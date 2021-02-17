@@ -4,13 +4,13 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import redirect
-from .models import UserProfile
+# from .models import UserProfile
 import json
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from .sendemail import send_mail
-
+from .serializers import UserSerializer
+from .models import User
 
 
 
@@ -42,42 +42,53 @@ class userLogin(APIView):
 
 class userSignUp(APIView):
 	renderer_classes = [TemplateHTMLRenderer]
+	serializer_class = UserSerializer
 	template_name = 'signuppage.html'
 	def get(self, request):
 		logout(request)
 		referal_code = request.GET.get('referal_code') if request.GET.get('referal_code') else 0
-		return Response({'referal_code':referal_code})
+		r = User.objects.all()
+		return Response({'referal_code':referal_code, 'r':r})
 
 	def post(self, request, *args, **kwargs):
 		response = {'status': 0, 'error_info':'Internal error'}
 		try:
-			qd = request.POST
-			if User.objects.filter(username=qd.get('username')).exists():
-				response['error_info'] = 'Username already exists. Please Login.'
-			else:
-				referal_code = qd.get('referal_code')
-				if referal_code not in ["0", 0]:
-					referal_code = str(referal_code)
-					referer = UserProfile.objects.filter(referal_code=referal_code)
-					if not referer:
-						response['error_info'] = 'Invalid referal code.'
-						return HttpResponse(json.dumps(response))
-				user = User(username=qd.get('username'))
-				user.set_password(qd.get('password'))
-				user.save()
-				user_profile = UserProfile(user=user)
-				if referal_code not in ["0", 0]:
-					referer = referer[0]
-					user_profile.referer = referer
-					user_profile.points = 100
-					referer.points += 100
-					referer.save()
-				user_profile.save()
+			serializer = UserSerializer(data=request.data)
+			if serializer.is_valid():
+				serializer.save()
 				response['status'] = 1
-				login(request, user)
+			else:
+				print(serializer.errors, flush=True)
 		except Exception as e:
 			print(e, flush=True)
 		return HttpResponse(json.dumps(response))
+		# 	qd = request.POST
+		# 	if User.objects.filter(username=qd.get('username')).exists():
+		# 		response['error_info'] = 'Username already exists. Please Login.'
+		# 	else:
+		# 		referal_code = qd.get('referal_code')
+		# 		if referal_code not in ["0", 0]:
+		# 			referal_code = str(referal_code)
+		# 			referer = UserProfile.objects.filter(referal_code=referal_code)
+		# 			if not referer:
+		# 				response['error_info'] = 'Invalid referal code.'
+		# 				return HttpResponse(json.dumps(response))
+		# 		user = User(username=qd.get('username'))
+		# 		user.set_password(qd.get('password'))
+		# 		user.save()
+		# 		user_profile = UserProfile(user=user)
+		# 		if referal_code not in ["0", 0]:
+		# 			referer = referer[0]
+		# 			user_profile.referer = referer
+		# 			user_profile.points = 100
+		# 			referer.points += 100
+		# 			referer.save()
+		# 		user_profile.save()
+		# 		response['status'] = 1
+		# 		login(request, user)
+		# except Exception as e:
+		# 	print(e, flush=True)
+		# return HttpResponse(json.dumps(response))
 
 def userLogout(request):
 	try:
