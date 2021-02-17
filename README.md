@@ -13,4 +13,7 @@ docker exec -it django bash
  python manage.py makemigrations
  python manage.py migrate
 
+For sending emails, change the email address and put your password in the below file.
+Referal_log_APP/referal/sendemail.py
+
 Thats it go to localhost:8000
