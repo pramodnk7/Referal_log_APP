@@ -31,11 +31,11 @@ class userLogin(APIView):
 		user = authenticate(username=username, password=password)
 		if not user:
 			response['error_info'] = "Invalid username or password."
-			return Response(response, status=status.HTTP_200_OK)
+			return Response(response, status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 		else:
 			login(request, user)
 			response['status'] = 1
-		return Response(response, status=status.HTTP_201_CREATED)
+		return Response(response, status=status.HTTP_202_ACCEPTED)
 
 
 class userSignUp(APIView):
